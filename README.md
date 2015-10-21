@@ -1,101 +1,71 @@
-Yii 2 Basic Project Template
-============================
+VSY-Projekt: Ticketsystem
+=========================
 
-Yii 2 Basic Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
-rapidly creating small projects.
+Projekt herunterladen
+---------------------
 
-The template contains the basic features including user login/logout and a contact page.
-It includes all commonly used configurations that would allow you to focus on adding new
-features to your application.
+1. Git herunterladen
+2. Git Bash öffnen
+3. Zum gewünschten Verzeichnis wechseln
+4. `git clone https://github.com/Heddy147/VSY-Ticket.git [vsy_projekt]`
+In `[]` ist optional. Das ist der Ordner, in dem das Projekt gespeichert wird.
 
-[![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-app-basic/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Total Downloads](https://poser.pugx.org/yiisoft/yii2-app-basic/downloads.png)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Build Status](https://travis-ci.org/yiisoft/yii2-app-basic.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-app-basic)
+Datenbankverbindung konfigurieren
+---------------------------------
 
-DIRECTORY STRUCTURE
--------------------
-
-      assets/             contains assets definition
-      commands/           contains console commands (controllers)
-      config/             contains application configurations
-      controllers/        contains Web controller classes
-      mail/               contains view files for e-mails
-      models/             contains model classes
-      runtime/            contains files generated during runtime
-      tests/              contains various tests for the basic application
-      vendor/             contains dependent 3rd-party packages
-      views/              contains view files for the Web application
-      web/                contains the entry script and Web resources
-
-
-
-REQUIREMENTS
-------------
-
-The minimum requirement by this project template that your Web server supports PHP 5.4.0.
-
-
-INSTALLATION
-------------
-
-### Install from an Archive File
-
-Extract the archive file downloaded from [yiiframework.com](http://www.yiiframework.com/download/) to
-a directory named `basic` that is directly under the Web root.
-
-Set cookie validation key in `config/web.php` file to some random secret string:
-
+Im Ordner `config` eine neue Datei `db-data.php` erstellen und folgenden Code einfügen:
 ```php
-'request' => [
-    // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-    'cookieValidationKey' => '<secret random string goes here>',
-],
-```
-
-You can then access the application through the following URL:
-
-~~~
-http://localhost/basic/web/
-~~~
-
-
-### Install via Composer
-
-If you do not have [Composer](http://getcomposer.org/), you may install it by following the instructions
-at [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
-
-You can then install this project template using the following command:
-
-~~~
-php composer.phar global require "fxp/composer-asset-plugin:~1.0.0"
-php composer.phar create-project --prefer-dist --stability=dev yiisoft/yii2-app-basic basic
-~~~
-
-Now you should be able to access the application through the following URL, assuming `basic` is the directory
-directly under the Web root.
-
-~~~
-http://localhost/basic/web/
-~~~
-
-
-CONFIGURATION
--------------
-
-### Database
-
-Edit the file `config/db.php` with real data, for example:
-
-```php
+<?php
 return [
-    'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-    'username' => 'root',
-    'password' => '1234',
-    'charset' => 'utf8',
+	'db1' => [
+		'host' => 'localhost',
+		'database' => 'vsy_projekt',
+		'user' => 'root',
+		'password' => ''
+	],
+	'db2' => [
+		'host' => 'localhost:3307',
+		'database' => 'vsy_projekt',
+		'user' => 'root',
+		'password' => ''
+	]
 ];
 ```
+Jeweils die Daten in `db1` und `db2` anpassen!
 
-**NOTE:** Yii won't create the database for you, this has to be done manually before you can access it.
+Apache konfigurieren
+--------------------
+Ihr MÜSST für das Projekt einen Virtual Host einrichten.
+Zuerst die `hosts`-Datei bearbeiten:
+`127.0.0.1 vsy_projekt`
+Auch hier ist vsy_projekt variabel, muss aber rein!
 
-Also check and edit the other files in the `config/` directory to customize your application.
+Die `http-vhosts.conf` muss in der Konfiguration freigeschaltet werden:
+Bei WAMP
+`C:\wamp\bin\apache\apache2.4.9\conf\httpd.conf`
+Bei XAMPP
+`C:\xampp\apache\conf\httpd.conf`
+
+Nach `Include conf/extra/httpd-vhosts.conf` suchen und die Raute `#` davor entfernen.
+
+Datei `http-vhosts.conf` öffnen (liegt ein Ordner tiefer `extra`) und folgende Zeilen einfügen:
+```
+NameVirtualHost *
+
+<VirtualHost *:80>
+    DocumentRoot "C:\wamp\www"
+    ServerName localhost
+</VirtualHost>
+
+<VirtualHost *:80>
+    DocumentRoot "C:\Users\Dominik\Documents\Uni\vsy_projekt\web"
+    ServerName vsy_projekt
+    ServerAdmin dominik.hendrix@hotmail.de
+</VirtualHost>
+```
+
+`DocumentRoot` zu dem Ordner ändern, in dem ihr das Projekt gespeichert habt. Wichtig hierbei ist, dass ihr auf den `web`-Ordner zeigt, nicht auf den Root-Ordner des Projekts.
+ServerName wie in der `hosts`-Datei anpassen (nicht 127.0.0.1 :D)
+ServerAdmin ist egal, was ihr eintragt, ist sowieso nur lokal :P.
+
+Danach erst den WAMP-/XAMPP-Server starten. Wenn ihr nun `vsy_projekt` (oder was ihr eingetragen habt) im Browser aufruft, werdet Ihr das Projekt wiederfinden.
